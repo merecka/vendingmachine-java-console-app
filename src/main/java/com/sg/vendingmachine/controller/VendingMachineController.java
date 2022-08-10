@@ -1,15 +1,23 @@
 package com.sg.vendingmachine.controller;
 
+import com.sg.vendingmachine.dao.VendingMachinePersistenceException;
+import com.sg.vendingmachine.dto.Item;
+import com.sg.vendingmachine.service.VendingMachineServiceLayer;
 import com.sg.vendingmachine.ui.VendingMachineView;
+
+import java.util.List;
 
 public class VendingMachineController {
     private VendingMachineView view;
 
-    public VendingMachineController(VendingMachineView view) {
+    private VendingMachineServiceLayer service;
+
+    public VendingMachineController(VendingMachineServiceLayer service, VendingMachineView view) {
         this.view = view;
+        this.service = service;
     }
 
-    public void run() {
+    public void run() throws VendingMachinePersistenceException {
         boolean keepGoing = true;
         int menuSelection = 0;
 
@@ -33,7 +41,10 @@ public class VendingMachineController {
         }
         exitMessage();
     }
-    private int getMenuSelection() {
+    private int getMenuSelection() throws VendingMachinePersistenceException {
+        List<Item> itemList = service.getAllStudents();
+        view.displayWelcomeBanner();
+        view.displayItemList(itemList);
         return view.printMenuAndGetSelection();
     }
 

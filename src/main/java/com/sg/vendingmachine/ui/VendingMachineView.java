@@ -1,5 +1,9 @@
 package com.sg.vendingmachine.ui;
 
+import com.sg.vendingmachine.dto.Item;
+
+import java.util.List;
+
 public class VendingMachineView {
 
     private UserIO io;
@@ -9,10 +13,6 @@ public class VendingMachineView {
     }
 
     public int printMenuAndGetSelection() {
-        io.print("Initial Screen");
-        io.print("Hi, welcome to the Super Duper Vending Machine!");
-        io.print("");
-        io.print("Items available for purchase:");
         io.print("Your available balance is:  $_____.  Please insert funds to make a purchase.");
         io.print("");
         io.print("Options:");
@@ -20,9 +20,25 @@ public class VendingMachineView {
         io.print("2.  Make a purchase");
         io.print("3.  Exit");
 
-        return io.readInt("Please select from the above choices.", 1, 5);
+        return io.readInt("Please select from the three choices above.", 1, 5);
     }
 
+    public void displayItemList(List<Item> itemList) {
+        io.print("Items Available for Purchase");
+        int count = 1;
+        for (Item currentItem : itemList) {
+            String itemInfo = String.format("%s. %s - $%s/ea",
+                    count++,
+                    currentItem.getName(),
+                    currentItem.getCost());
+            io.print(itemInfo);
+        }
+    }
+
+    public void displayWelcomeBanner() {
+        io.print("Hi, welcome to the Super Duper Vending Machine!!");
+        io.print("");
+    }
     public void displayUnknownCommandBanner() {
         io.print("Unknown Command.  Please try again.");
     }

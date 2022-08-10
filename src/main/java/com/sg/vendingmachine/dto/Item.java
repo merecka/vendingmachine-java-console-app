@@ -1,16 +1,25 @@
 package com.sg.vendingmachine.dto;
 
 public class Item {
+
+    private String id;
+
     private String name;
 
     private String cost;
 
     private int quantityOnHand;
 
-    public Item(String name, String cost, int quantityOnHand) {
-        this.name = name;
-        this.cost = cost;
-        this.quantityOnHand = quantityOnHand;
+    public Item(String id) {
+        this.id = id;
+    }
+
+    public String getItemId() {
+        return id;
+    }
+
+    public void setItemId(String id) {
+        this.id = id;
     }
 
     public String getName() {
