@@ -2,6 +2,7 @@ package com.sg.vendingmachine.controller;
 
 import com.sg.vendingmachine.dao.VendingMachinePersistenceException;
 import com.sg.vendingmachine.dto.Item;
+import com.sg.vendingmachine.service.UserBalanceServiceLayer;
 import com.sg.vendingmachine.service.VendingMachineServiceLayer;
 import com.sg.vendingmachine.ui.VendingMachineView;
 
@@ -10,11 +11,14 @@ import java.util.List;
 public class VendingMachineController {
     private VendingMachineView view;
 
-    private VendingMachineServiceLayer service;
+    private VendingMachineServiceLayer vendingMachineService;
 
-    public VendingMachineController(VendingMachineServiceLayer service, VendingMachineView view) {
+    private UserBalanceServiceLayer userBalanceService;
+
+    public VendingMachineController(VendingMachineServiceLayer vendingMachineService, UserBalanceServiceLayer userBalanceService,VendingMachineView view) {
         this.view = view;
-        this.service = service;
+        this.vendingMachineService = vendingMachineService;
+        this.userBalanceService = userBalanceService;
     }
 
     public void run() throws VendingMachinePersistenceException {
@@ -42,10 +46,11 @@ public class VendingMachineController {
         exitMessage();
     }
     private int getMenuSelection() throws VendingMachinePersistenceException {
-        List<Item> itemList = service.getAllStudents();
+        List<Item> itemList = vendingMachineService.getAllItems();
+        String userBalance = userBalanceService.getUserBalance().toString();
         view.displayWelcomeBanner();
         view.displayItemList(itemList);
-        return view.printMenuAndGetSelection();
+        return view.printMenuAndGetSelection(userBalance);
     }
 
     private void unknownCommand() {

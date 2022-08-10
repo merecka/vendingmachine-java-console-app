@@ -1,6 +1,5 @@
 package com.sg.vendingmachine.dao;
 
-import com.sg.vendingmachine.controller.VendingMachineController;
 import com.sg.vendingmachine.dto.Item;
 
 import java.io.BufferedReader;
@@ -8,14 +7,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
 
-public class VendingMachineDaoFileImpl implements VendingMachineDao {
+public class ItemsDaoFileImpl implements ItemsDao {
 
     private Map<String, Item> items = new HashMap<>();
 
     private final String ITEMS_FILE;
     public static final String DELIMITER = "::";
 
-    public VendingMachineDaoFileImpl() {
+    public ItemsDaoFileImpl() {
         this.ITEMS_FILE = "items.txt";
     }
 

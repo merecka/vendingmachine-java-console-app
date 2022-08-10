@@ -12,15 +12,21 @@ public class VendingMachineView {
         this.io = io;
     }
 
-    public int printMenuAndGetSelection() {
-        io.print("Your available balance is:  $_____.  Please insert funds to make a purchase.");
+    public int printMenuAndGetSelection(String userBalance) {
+        if (userBalance.equals("0")) {
+            io.print("");
+            io.print("Your available balance is:  $" + userBalance + ".  Please insert funds to make a purchase.");
+        } else {
+            io.print("");
+            io.print("Your available balance is:  $" + userBalance);
+        }
         io.print("");
         io.print("Options:");
         io.print("1.  Insert funds");
         io.print("2.  Make a purchase");
         io.print("3.  Exit");
 
-        return io.readInt("Please select from the three choices above.", 1, 5);
+        return io.readInt("Please select from the above three Options (1-3).", 1, 5);
     }
 
     public void displayItemList(List<Item> itemList) {

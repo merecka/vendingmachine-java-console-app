@@ -4,7 +4,7 @@ import com.sg.vendingmachine.dto.Item;
 
 import java.util.List;
 
-public interface VendingMachineDao {
+public interface ItemsDao {
 
     // returns a List of all the Items for purchase.
     List<Item> getAllItems() throws VendingMachinePersistenceException;
