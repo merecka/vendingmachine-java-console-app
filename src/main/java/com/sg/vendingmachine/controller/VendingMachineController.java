@@ -31,7 +31,7 @@ public class VendingMachineController {
 
             switch (menuSelection) {
                 case 1:
-                    //insertFunds();
+                    insertFunds();
                     break;
                 case 2:
                     //makePurchase();
@@ -51,6 +51,11 @@ public class VendingMachineController {
         view.displayWelcomeBanner();
         view.displayItemList(itemList);
         return view.printMenuAndGetSelection(userBalance);
+    }
+
+    private void insertFunds() {
+        String newFunds = view.displayInsertFundsMenu();
+        userBalanceService.updateUserBalance(newFunds);
     }
 
     private void unknownCommand() {

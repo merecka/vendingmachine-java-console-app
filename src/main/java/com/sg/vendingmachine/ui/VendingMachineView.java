@@ -12,6 +12,11 @@ public class VendingMachineView {
         this.io = io;
     }
 
+    public void displayWelcomeBanner() {
+        io.print("Hi, welcome to the Super Duper Vending Machine!!");
+        io.print("");
+    }
+
     public int printMenuAndGetSelection(String userBalance) {
         if (userBalance.equals("0")) {
             io.print("");
@@ -41,9 +46,10 @@ public class VendingMachineView {
         }
     }
 
-    public void displayWelcomeBanner() {
-        io.print("Hi, welcome to the Super Duper Vending Machine!!");
-        io.print("");
+    public String displayInsertFundsMenu() {
+        String input = io.readString("How much would you like to deposit (ex: $2.50)?  $");
+        // TODO:  Need to verify user enters a valid formatted value (with a .) and a value greater than 0.
+        return input.trim();
     }
     public void displayUnknownCommandBanner() {
         io.print("Unknown Command.  Please try again.");

@@ -19,7 +19,9 @@ public class UserBalanceDaoFileImpl implements UserBalanceDao {
 
         BigDecimal newBalance = this.userBalance.getBalance().add(newAmount);
         newBalance.setScale(2, RoundingMode.HALF_UP);
+        System.out.println("newBalance is: " + newBalance);
         this.userBalance.setBalance(newBalance);
+        System.out.println("New user balance is: " + this.userBalance.getBalance());
     }
 
     @Override

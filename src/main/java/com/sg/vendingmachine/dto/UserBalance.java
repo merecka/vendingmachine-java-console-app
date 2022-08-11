@@ -6,7 +6,7 @@ import java.math.RoundingMode;
 public class UserBalance {
 
 
-    private String initialBalance = "1";
+    private String initialBalance = "0";
     private BigDecimal currentBalance;
 
     // need to verify that User has entered only integers for the starting balance

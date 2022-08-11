@@ -15,4 +15,8 @@ public class UserBalanceServiceLayerImpl implements UserBalanceServiceLayer {
     public BigDecimal getUserBalance() {
         return userBalanceDao.getUserBalance();
     }
+
+    public void updateUserBalance(String newFunds) {
+        userBalanceDao.updateUserBalance(newFunds);
+    }
 }
