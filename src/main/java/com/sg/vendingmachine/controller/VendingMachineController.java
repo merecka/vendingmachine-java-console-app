@@ -55,9 +55,10 @@ public class VendingMachineController {
         return view.printMenuAndGetSelection(userBalance);
     }
 
-    private void insertFunds() {
+    private void insertFunds() throws VendingMachinePersistenceException {
         String newFunds = view.displayInsertFundsMenu();
         this.userBalance.setBalance(newFunds);
+        vendingMachineService.insertFunds(newFunds);
     }
 
     private void makePurchase() throws VendingMachinePersistenceException {

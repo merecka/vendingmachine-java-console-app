@@ -12,6 +12,8 @@ public interface VendingMachineServiceLayer {
 
     boolean makePurchase(Item item) throws VendingMachinePersistenceException;
 
-    String calculateChange(BigDecimal userBalance);
-    String calculateChange(BigDecimal userBalance, Item purchasedItem);
+    String calculateChange(BigDecimal userBalance) throws VendingMachinePersistenceException;
+    String calculateChange(BigDecimal userBalance, Item purchasedItem) throws VendingMachinePersistenceException;
+
+    void insertFunds(String insertedFunds) throws VendingMachinePersistenceException;
 }

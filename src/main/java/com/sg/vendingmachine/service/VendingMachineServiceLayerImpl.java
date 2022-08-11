@@ -1,6 +1,7 @@
 package com.sg.vendingmachine.service;
 
 import com.sg.vendingmachine.dao.ItemsDao;
+import com.sg.vendingmachine.dao.ItemsListAuditDao;
 import com.sg.vendingmachine.dao.VendingMachinePersistenceException;
 import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.Item;
@@ -19,6 +20,8 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
 
     UserBalance userBalance;
 
+    ItemsListAuditDao itemsListAuditDao;
+
     public enum Coin {
         QUARTERS(new BigDecimal("25")),
         DIMES(new BigDecimal("10")),
@@ -35,9 +38,10 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
         }
     }
 
-    public VendingMachineServiceLayerImpl(ItemsDao itemsDao, UserBalance userBalance) {
+    public VendingMachineServiceLayerImpl(ItemsDao itemsDao, UserBalance userBalance, ItemsListAuditDao itemsAuditDao) {
         this.itemsDao = itemsDao;
         this.userBalance = userBalance;
+        this.itemsListAuditDao = itemsAuditDao;
     }
 
     // Returns a List of Items (name, quantity, price) with on-hand quantity > 0
@@ -53,8 +57,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
             return false;
         } else {
             String itemCost = "-" + item.getCost();
-            userBalance.setBalance(itemCost);
-
+            itemsListAuditDao.writeAuditEntry("Item " + item.getItemId() + " " + item.getName() + " $" + item.getCost() + " purchased.");
             itemsDao.updateItemQuantity(item);
             return true;
         }
@@ -62,7 +65,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
 
     // Use this method to return change when no purchase is made
     @Override
-    public String calculateChange(BigDecimal userBalance) {
+    public String calculateChange(BigDecimal userBalance) throws VendingMachinePersistenceException {
         BigDecimal changeOwedInPennies = userBalance.multiply(new BigDecimal("100"));
         Change userChange = new Change();
 
@@ -91,12 +94,13 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
                 userChange.getNicklesOwed() + " X Nickels, " +
                 userChange.getPenniesOwed() + " X Pennies";
 
+        itemsListAuditDao.writeAuditEntry("$" +  userBalance + " change given.");
         return changeOwedString;
     }
 
     // Use this method to return change when a purchase is made
     @Override
-    public String calculateChange(BigDecimal userBalance, Item purchasedItem) {
+    public String calculateChange(BigDecimal userBalance, Item purchasedItem) throws VendingMachinePersistenceException {
         BigDecimal originalOwed = userBalance.subtract(purchasedItem.getCost());
         BigDecimal changeOwedInPennies = userBalance.subtract(purchasedItem.getCost()).multiply(new BigDecimal("100"));
         Change userChange = new Change();
@@ -126,6 +130,12 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
                 userChange.getNicklesOwed() + " X Nickels, " +
                 userChange.getPenniesOwed() + " X Pennies";
 
+        itemsListAuditDao.writeAuditEntry("$" +  originalOwed + " change given.");
         return changeOwedString;
+    }
+
+    public void insertFunds(String newFunds) throws VendingMachinePersistenceException {
+        BigDecimal newFundsBD = new BigDecimal((newFunds)).setScale(2, RoundingMode.CEILING);
+        itemsListAuditDao.writeAuditEntry("New funds in the amount of $" + newFundsBD + " inserted.");
     }
 }
