@@ -73,7 +73,11 @@ public class VendingMachineView {
     }
 
     public void displayNotEnoughFunds() {
-        io.print("Not enough funds available for this purchase.");
+        io.readString("Not enough funds available for this purchase.  Please deposit more funds.");
+    }
+
+    public void displayNoFunds() {
+        io.readString("You must first deposit funds before making a purchase.");
     }
 
     public void displayExitBanner() {

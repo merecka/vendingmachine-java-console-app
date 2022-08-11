@@ -62,12 +62,15 @@ public class VendingMachineController {
     }
 
     private void makePurchase() throws VendingMachinePersistenceException {
+        if (userBalanceService.getUserBalance().compareTo(new BigDecimal("0")) == 0) {
+            view.displayNoFunds();
+            return;
+        }
         List<Item> itemList = vendingMachineService.getAllItems();
         view.displayItemList(itemList);
         view.displayAvailableBalance();
         int itemNumberChosen = view.readUserPurchaseChoice() - 1;  // convert the number to the index number
         Item purchasedItem = itemList.get(itemNumberChosen);
-
 
         if (vendingMachineService.makePurchase(purchasedItem) == false) {
             view.displayNotEnoughFunds();
