@@ -1,11 +1,10 @@
 package com.sg.vendingmachine.service;
 
 import com.sg.vendingmachine.dao.ItemsDao;
-import com.sg.vendingmachine.dao.UserBalanceDao;
 import com.sg.vendingmachine.dao.VendingMachinePersistenceException;
 import com.sg.vendingmachine.dto.Item;
+import com.sg.vendingmachine.dto.UserBalance;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,28 +12,28 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
 
     ItemsDao itemsDao;
 
-    UserBalanceDao userBalanceDao;
+    UserBalance userBalance;
 
-    public VendingMachineServiceLayerImpl(ItemsDao itemsDao, UserBalanceDao userBalanceDao) {
+    public VendingMachineServiceLayerImpl(ItemsDao itemsDao, UserBalance userBalance) {
         this.itemsDao = itemsDao;
-        this.userBalanceDao = userBalanceDao;
+        this.userBalance = userBalance;
     }
 
     // Returns a List of Items (name, quantity, price) with on-hand quantity > 0
     @Override
     public List<Item> getAllItems() throws VendingMachinePersistenceException {
         List<Item> allItems = itemsDao.getAllItems();
-        List<Item> filteredItems = allItems.stream().filter((item) -> item.getQuantityOnHand() > 0).collect(Collectors.toList());
-        return filteredItems;
+        return allItems.stream().filter((item) -> item.getQuantityOnHand() > 0).collect(Collectors.toList());
     }
 
     @Override
     public boolean makePurchase(Item item) throws VendingMachinePersistenceException {
-        if (userBalanceDao.getUserBalance().compareTo(item.getCost()) == -1) {
+        if (userBalance.getBalance().compareTo(item.getCost()) == -1) {  // evaluates if Item cost is more than current User balance
             return false;
         } else {
             String itemCost = "-" + item.getCost();
-            userBalanceDao.updateUserBalance(itemCost);
+            userBalance.setBalance(itemCost);
+
             itemsDao.updateItemQuantity(item);
             return true;
         }

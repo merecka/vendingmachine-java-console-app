@@ -2,9 +2,8 @@ package com.sg.vendingmachine.controller;
 
 import com.sg.vendingmachine.dao.VendingMachinePersistenceException;
 import com.sg.vendingmachine.dto.Item;
-import com.sg.vendingmachine.service.UserBalanceServiceLayer;
+import com.sg.vendingmachine.dto.UserBalance;
 import com.sg.vendingmachine.service.VendingMachineServiceLayer;
-import com.sg.vendingmachine.service.VendingMachineServiceLayerImpl;
 import com.sg.vendingmachine.ui.VendingMachineView;
 
 import java.math.BigDecimal;
@@ -15,12 +14,12 @@ public class VendingMachineController {
 
     private VendingMachineServiceLayer vendingMachineService;
 
-    private UserBalanceServiceLayer userBalanceService;
+    private UserBalance userBalance;
 
-    public VendingMachineController(VendingMachineServiceLayer vendingMachineService, UserBalanceServiceLayer userBalanceService,VendingMachineView view) {
+    public VendingMachineController(VendingMachineServiceLayer vendingMachineService, VendingMachineView view, UserBalance userBalance) {
         this.view = view;
         this.vendingMachineService = vendingMachineService;
-        this.userBalanceService = userBalanceService;
+        this.userBalance = userBalance;
     }
 
     public void run() throws VendingMachinePersistenceException {
@@ -49,26 +48,27 @@ public class VendingMachineController {
     }
     private int getMenuSelection() throws VendingMachinePersistenceException {
         List<Item> itemList = vendingMachineService.getAllItems();
-        BigDecimal userBalance = userBalanceService.getUserBalance();
+        BigDecimal userBalance = this.userBalance.getBalance();
         view.displayWelcomeBanner();
         view.displayItemList(itemList);
-        view.displayAvailableBalance();
+        view.displayAvailableBalance(userBalance);
         return view.printMenuAndGetSelection(userBalance);
     }
 
     private void insertFunds() {
         String newFunds = view.displayInsertFundsMenu();
-        userBalanceService.updateUserBalance(newFunds);
+        this.userBalance.setBalance(newFunds);
     }
 
     private void makePurchase() throws VendingMachinePersistenceException {
-        if (userBalanceService.getUserBalance().compareTo(new BigDecimal("0")) == 0) {
+        BigDecimal userBalance = this.userBalance.getBalance();
+        if (userBalance.compareTo(new BigDecimal("0")) == 0) {
             view.displayNoFunds();
             return;
         }
         List<Item> itemList = vendingMachineService.getAllItems();
         view.displayItemList(itemList);
-        view.displayAvailableBalance();
+        view.displayAvailableBalance(userBalance);
         int itemNumberChosen = view.readUserPurchaseChoice() - 1;  // convert the number to the index number
         Item purchasedItem = itemList.get(itemNumberChosen);
 

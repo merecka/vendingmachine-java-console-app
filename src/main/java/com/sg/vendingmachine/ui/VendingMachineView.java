@@ -1,22 +1,16 @@
 package com.sg.vendingmachine.ui;
 
-import com.sg.vendingmachine.dao.UserBalanceDao;
 import com.sg.vendingmachine.dto.Item;
-import com.sg.vendingmachine.dto.UserBalance;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 public class VendingMachineView {
 
     private UserIO io;
 
-    private UserBalanceDao userBalanceDao;
-
-    public VendingMachineView(UserIO io, UserBalanceDao userBalanceDao) {
+    public VendingMachineView(UserIO io) {
         this.io = io;
-        this.userBalanceDao = userBalanceDao;
     }
 
     public void displayWelcomeBanner() {
@@ -24,15 +18,15 @@ public class VendingMachineView {
         io.print("");
     }
 
-    public void displayAvailableBalance() {
+    public void displayAvailableBalance(BigDecimal userBalance) {
         BigDecimal zeroBigDecimal = new BigDecimal("0");
 
-        if (userBalanceDao.getUserBalance().compareTo(zeroBigDecimal) == 0) {
+        if (userBalance.compareTo(zeroBigDecimal) == 0) {
             io.print("");
-            io.print("Your available balance is:  $" + userBalanceDao.getUserBalance() + ".  Please insert funds to make a purchase.");
+            io.print("Your available balance is:  $" + userBalance + ".  Please insert funds to make a purchase.");
         } else {
             io.print("");
-            io.print("Your available balance is:  $" + userBalanceDao.getUserBalance());
+            io.print("Your available balance is:  $" + userBalance);
         }
     }
 
