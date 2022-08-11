@@ -1,15 +1,22 @@
 package com.sg.vendingmachine.ui;
 
+import com.sg.vendingmachine.dao.UserBalanceDao;
 import com.sg.vendingmachine.dto.Item;
+import com.sg.vendingmachine.dto.UserBalance;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class VendingMachineView {
 
     private UserIO io;
 
-    public VendingMachineView(UserIO io) {
+    private UserBalanceDao userBalanceDao;
+
+    public VendingMachineView(UserIO io, UserBalanceDao userBalanceDao) {
         this.io = io;
+        this.userBalanceDao = userBalanceDao;
     }
 
     public void displayWelcomeBanner() {
@@ -17,14 +24,19 @@ public class VendingMachineView {
         io.print("");
     }
 
-    public int printMenuAndGetSelection(String userBalance) {
-        if (userBalance.equals("0")) {
+    public void displayAvailableBalance() {
+        BigDecimal zeroBigDecimal = new BigDecimal("0");
+
+        if (userBalanceDao.getUserBalance().compareTo(zeroBigDecimal) == 0) {
             io.print("");
-            io.print("Your available balance is:  $" + userBalance + ".  Please insert funds to make a purchase.");
+            io.print("Your available balance is:  $" + userBalanceDao.getUserBalance() + ".  Please insert funds to make a purchase.");
         } else {
             io.print("");
-            io.print("Your available balance is:  $" + userBalance);
+            io.print("Your available balance is:  $" + userBalanceDao.getUserBalance());
         }
+    }
+
+    public int printMenuAndGetSelection(BigDecimal userBalance) {
         io.print("");
         io.print("Options:");
         io.print("1.  Insert funds");
@@ -38,12 +50,17 @@ public class VendingMachineView {
         io.print("Items Available for Purchase");
         int count = 1;
         for (Item currentItem : itemList) {
-            String itemInfo = String.format("%s. %s - $%s/ea",
+            String itemInfo = String.format("%s. %s - $%s/ea - Quantity: %s",
                     count++,
                     currentItem.getName(),
-                    currentItem.getCost());
+                    currentItem.getCost(),
+                    currentItem.getQuantityOnHand());
             io.print(itemInfo);
         }
+    }
+
+    public int readUserPurchaseChoice() {
+        return io.readInt("Please choose one of the available items by its corresponding number.");
     }
 
     public String displayInsertFundsMenu() {
@@ -53,6 +70,10 @@ public class VendingMachineView {
     }
     public void displayUnknownCommandBanner() {
         io.print("Unknown Command.  Please try again.");
+    }
+
+    public void displayNotEnoughFunds() {
+        io.print("Not enough funds available for this purchase.");
     }
 
     public void displayExitBanner() {

@@ -6,13 +6,13 @@ import java.math.RoundingMode;
 public class UserBalance {
 
 
-    private String initialBalance = "0";
+    private String initialBalance = "0.00";
     private BigDecimal currentBalance;
 
     // need to verify that User has entered only integers for the starting balance
     public UserBalance() {
         this.currentBalance = new BigDecimal(initialBalance);
-        this.currentBalance.setScale(2, RoundingMode.HALF_UP);
+        this.currentBalance.setScale(2, RoundingMode.CEILING);
     }
 
     public BigDecimal getBalance() {

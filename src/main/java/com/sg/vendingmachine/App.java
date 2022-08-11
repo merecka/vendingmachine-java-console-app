@@ -22,11 +22,11 @@ public class App {
         // Instantiate the UserIO implementation
         UserIO myIo = new UserIOConsoleImpl();
         // Instantiate the View and wire the UserIO implementation into it
-        VendingMachineView myView = new VendingMachineView(myIo);
+        VendingMachineView myView = new VendingMachineView(myIo, userBalanceDao);
         // Instantiate the ItemsDAO
         ItemsDao itemsDao = new ItemsDaoFileImpl();
         // Instantiate the VendingService Layer and wire the DAO and Audit DAO into it
-        VendingMachineServiceLayer myVendingService = new VendingMachineServiceLayerImpl(itemsDao);
+        VendingMachineServiceLayer myVendingService = new VendingMachineServiceLayerImpl(itemsDao, userBalanceDao);
         // Instantiate the Controller and wire the Service Layer into it
         VendingMachineController controller = new VendingMachineController(myVendingService, myUserBalanceService, myView);
         // Kick off the Controller

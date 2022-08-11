@@ -1,12 +1,15 @@
 package com.sg.vendingmachine.dto;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class Item {
 
     private String id;
 
     private String name;
 
-    private String cost;
+    private BigDecimal cost;
 
     private int quantityOnHand;
 
@@ -18,10 +21,6 @@ public class Item {
         return id;
     }
 
-    public void setItemId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -30,12 +29,13 @@ public class Item {
         this.name = name;
     }
 
-    public String getCost() {
+    public BigDecimal getCost() {
         return cost;
     }
 
     public void setCost(String cost) {
-        this.cost = cost;
+        BigDecimal newCost = new BigDecimal(cost);
+        this.cost = newCost.setScale(2, RoundingMode.HALF_UP);
     }
 
     public int getQuantityOnHand() {

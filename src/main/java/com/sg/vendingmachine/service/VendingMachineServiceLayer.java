@@ -9,4 +9,6 @@ import java.util.List;
 public interface VendingMachineServiceLayer {
 
     List<Item> getAllItems() throws VendingMachinePersistenceException;
+
+    boolean makePurchase(Item item) throws VendingMachinePersistenceException;
 }

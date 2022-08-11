@@ -2,9 +2,7 @@ package com.sg.vendingmachine.dao;
 
 import com.sg.vendingmachine.dto.Item;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 
 public class ItemsDaoFileImpl implements ItemsDao {
@@ -22,6 +20,17 @@ public class ItemsDaoFileImpl implements ItemsDao {
     public List<Item> getAllItems() throws VendingMachinePersistenceException {
         loadItems();
         return new ArrayList(items.values());
+    }
+
+    public Item getItem(String itemId) throws VendingMachinePersistenceException {
+        loadItems();
+        return items.get(itemId);
+    }
+
+    public void updateItemQuantity(Item item) throws VendingMachinePersistenceException {
+        Item itemToUpdate = getItem(item.getItemId());
+        itemToUpdate.setQuantityOnHand(itemToUpdate.getQuantityOnHand() - 1);
+        writeItems();
     }
 
     private Item unmarshallItem(String itemAsText){
@@ -57,6 +66,27 @@ public class ItemsDaoFileImpl implements ItemsDao {
         return itemFromFile;
     }
 
+    private String marshallItem(Item item){
+        // We need to turn an Item object into a line of text for our file.
+        // For example, we need an in memory object to end up like this:
+        // 0001::Chips::10::1.20
+
+        // Start with the student id, since that's supposed to be first.
+        String itemAsText = item.getItemId() + DELIMITER;
+
+        // name
+        itemAsText += item.getName() + DELIMITER;
+
+        // LastName
+        itemAsText += item.getQuantityOnHand() + DELIMITER;
+
+        // Cohort - don't forget to skip the DELIMITER here.
+        itemAsText += item.getCost();
+
+        // We have now turned a student to text! Return it!
+        return itemAsText;
+    }
+
     // loads Items from text file
     private void loadItems() throws VendingMachinePersistenceException {
         Scanner scanner;
@@ -89,5 +119,30 @@ public class ItemsDaoFileImpl implements ItemsDao {
         }
         // close scanner
         scanner.close();
+    }
+
+    private void writeItems() throws VendingMachinePersistenceException {
+
+        PrintWriter out;
+
+        try {
+            out = new PrintWriter(new FileWriter(ITEMS_FILE));
+        } catch (IOException e) {
+            throw new VendingMachinePersistenceException(
+                    "Could not save item data.", e);
+        }
+
+        String itemAsText;
+        List<Item> itemList = this.getAllItems();
+        for (Item currentItem : itemList) {
+            // turn an Item into a String
+            itemAsText = marshallItem(currentItem);
+            // write the Student object to the file
+            out.println(itemAsText);
+            // force PrintWriter to write line to the file
+            out.flush();
+        }
+        // Clean up
+        out.close();
     }
 }
