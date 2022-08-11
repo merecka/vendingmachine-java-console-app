@@ -64,7 +64,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     @Override
     public String calculateChange(BigDecimal userBalance) {
         BigDecimal changeOwedInPennies = userBalance.multiply(new BigDecimal("100"));
-        Change userChange = new Change(changeOwedInPennies);
+        Change userChange = new Change();
 
         //BigDecimal remainderOwedInPennies;
         BigDecimal quartersOwed = changeOwedInPennies.divide(Coin.QUARTERS.value);
@@ -99,7 +99,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     public String calculateChange(BigDecimal userBalance, Item purchasedItem) {
         BigDecimal originalOwed = userBalance.subtract(purchasedItem.getCost());
         BigDecimal changeOwedInPennies = userBalance.subtract(purchasedItem.getCost()).multiply(new BigDecimal("100"));
-        Change userChange = new Change(changeOwedInPennies);
+        Change userChange = new Change();
 
         //BigDecimal remainderOwedInPennies;
         BigDecimal quartersOwed = changeOwedInPennies.divide(Coin.QUARTERS.value);

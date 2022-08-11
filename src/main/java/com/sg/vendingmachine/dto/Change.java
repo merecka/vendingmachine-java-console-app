@@ -5,10 +5,6 @@ import java.math.RoundingMode;
 
 public class Change {
 
-    private String totalPenniesString;
-
-    private BigDecimal changeOwedTotalInPennies;
-
     private BigDecimal quartersOwed;
 
     private BigDecimal dimesOwed;
@@ -17,20 +13,9 @@ public class Change {
 
     private BigDecimal penniesOwed;
 
-    private BigDecimal remainderChangeOwed;
 
 
-    public Change(BigDecimal totalPennies) {
-        totalPennies.setScale(2, RoundingMode.HALF_UP);
-        this.remainderChangeOwed = totalPennies;
-    }
-
-    public BigDecimal getChangeOwedTotalInPennies() {
-        return changeOwedTotalInPennies;
-    }
-
-    public void setChangeOwedTotalInPennies(BigDecimal changeOwedTotalInPennies) {
-        this.changeOwedTotalInPennies = changeOwedTotalInPennies;
+    public Change() {
     }
 
     public BigDecimal getQuartersOwed() {
@@ -63,13 +48,5 @@ public class Change {
 
     public void setPenniesOwed(BigDecimal pennies) {
         this.penniesOwed = pennies;
-    }
-
-    public BigDecimal getRemainderChangeOwed() {
-        return remainderChangeOwed;
-    }
-
-    public void setRemainderChangeOwed(BigDecimal remainderChangeOwed) {
-        this.remainderChangeOwed = remainderChangeOwed;
     }
 }
