@@ -2,6 +2,7 @@ package com.sg.vendingmachine;
 
 import com.sg.vendingmachine.controller.VendingMachineController;
 import com.sg.vendingmachine.dao.*;
+import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.UserBalance;
 import com.sg.vendingmachine.service.VendingMachineServiceLayer;
 import com.sg.vendingmachine.service.VendingMachineServiceLayerImpl;

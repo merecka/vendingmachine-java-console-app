@@ -13,28 +13,16 @@ public class Change {
 
     private BigDecimal dimesOwed;
 
-    private BigDecimal nicklesOwed;
+    private BigDecimal nickelsOwed;
 
     private BigDecimal penniesOwed;
 
     private BigDecimal remainderChangeOwed;
 
-    public enum Coin {
-        QUARTERS(new BigDecimal("25")),
-        DIMES(new BigDecimal("10")),
-        NICKLES(new BigDecimal("5")),
-        PENNIES(new BigDecimal("1"));
-        private final BigDecimal value;
 
-        private Coin(BigDecimal value) {
-            this.value = value;
-        }
-    }
-
-    public Change(String totalPenniesString) {
-        this.changeOwedTotalInPennies = new BigDecimal(totalPenniesString);
-        this.changeOwedTotalInPennies.setScale(2, RoundingMode.HALF_UP);
-        this.remainderChangeOwed = this.changeOwedTotalInPennies;
+    public Change(BigDecimal totalPennies) {
+        totalPennies.setScale(2, RoundingMode.HALF_UP);
+        this.remainderChangeOwed = totalPennies;
     }
 
     public BigDecimal getChangeOwedTotalInPennies() {
@@ -49,36 +37,32 @@ public class Change {
         return quartersOwed;
     }
 
-    public void setQuartersOwed() {
-        this.quartersOwed = remainderChangeOwed.divide(Coin.QUARTERS.value, RoundingMode.HALF_UP);
-        setRemainderChangeOwed(this.remainderChangeOwed.remainder(Coin.QUARTERS.value));
+    public void setQuartersOwed(BigDecimal quarters) {
+        this.quartersOwed = quarters;
     }
 
     public BigDecimal getDimesOwed() {
         return dimesOwed;
     }
 
-    public void setDimesOwed() {
-        this.dimesOwed = remainderChangeOwed.divide(Coin.DIMES.value, RoundingMode.HALF_UP);
-        setRemainderChangeOwed(this.remainderChangeOwed.remainder(Coin.DIMES.value));
+    public void setDimesOwed(BigDecimal dimes) {
+        this.dimesOwed = dimes;
     }
 
     public BigDecimal getNicklesOwed() {
-        return nicklesOwed;
+        return nickelsOwed;
     }
 
-    public void setNicklesOwed() {
-        this.nicklesOwed = remainderChangeOwed.divide(Coin.NICKLES.value, RoundingMode.HALF_UP);
-        setRemainderChangeOwed(this.remainderChangeOwed.remainder(Coin.NICKLES.value));
+    public void setNicklesOwed(BigDecimal nickels) {
+        this.nickelsOwed = nickels;
     }
 
     public BigDecimal getPenniesOwed() {
         return penniesOwed;
     }
 
-    public void setPenniesOwed() {
-        this.penniesOwed = remainderChangeOwed.divide(Coin.PENNIES.value, RoundingMode.HALF_UP);
-        setRemainderChangeOwed(this.remainderChangeOwed.remainder(Coin.PENNIES.value));
+    public void setPenniesOwed(BigDecimal pennies) {
+        this.penniesOwed = pennies;
     }
 
     public BigDecimal getRemainderChangeOwed() {

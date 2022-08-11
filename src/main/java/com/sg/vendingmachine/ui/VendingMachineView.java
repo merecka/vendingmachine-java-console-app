@@ -62,6 +62,10 @@ public class VendingMachineView {
         // TODO:  Need to verify user enters a valid formatted value (with a .) and a value greater than 0.
         return input.trim();
     }
+
+    public void displayChange(String changeOwed) {
+        io.readString("Your change is: " + changeOwed);
+    }
     public void displayUnknownCommandBanner() {
         io.print("Unknown Command.  Please try again.");
     }

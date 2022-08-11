@@ -69,11 +69,17 @@ public class VendingMachineController {
         List<Item> itemList = vendingMachineService.getAllItems();
         view.displayItemList(itemList);
         view.displayAvailableBalance(userBalance);
-        int itemNumberChosen = view.readUserPurchaseChoice() - 1;  // convert the number to the index number
+        int itemNumberChosen = view.readUserPurchaseChoice() - 1;  // convert the menu number to the index number
         Item purchasedItem = itemList.get(itemNumberChosen);
-
-        if (vendingMachineService.makePurchase(purchasedItem) == false) {
+        if (vendingMachineService.makePurchase(purchasedItem) == false) {  // not able to make purchase
+            String changeOwed = vendingMachineService.calculateChange(userBalance);
             view.displayNotEnoughFunds();
+            view.displayChange(changeOwed);
+            this.userBalance.setBalance("0.00");
+        } else {  // able to make purchase
+            String changeOwed = vendingMachineService.calculateChange(userBalance, purchasedItem);
+            view.displayChange(changeOwed);
+            this.userBalance.setBalance("0.00");
         }
     }
 

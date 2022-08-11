@@ -21,10 +21,6 @@ public class UserBalance {
 
     public void setBalance(String newAmount) {
         BigDecimal newAmountBD = new BigDecimal(newAmount);
-        newAmountBD.setScale(2, RoundingMode.HALF_UP);
-        BigDecimal newBalance = this.getBalance().add(newAmountBD);
-        System.out.println("newBalance is: " + newBalance);
-        this.currentBalance = newBalance;
-        System.out.println("New user balance is: " + this.getBalance());
+        this.currentBalance = newAmountBD.setScale(2, RoundingMode.CEILING);
     }
 }
