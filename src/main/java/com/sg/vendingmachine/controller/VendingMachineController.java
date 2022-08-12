@@ -80,8 +80,6 @@ public class VendingMachineController {
                 if (itemNumberChosen == 0) {  // user wants to exit Item selection screen
                     String changeOwed = vendingMachineService.calculateChange(userBalance);
                     view.displayChange(changeOwed);
-                    this.userBalance.setBalance("0.00");
-                    hasErrors = false;
                 } else {
                     // able to make purchase
                     itemNumberChosen -= 1;   // convert the menu number to the index number
@@ -89,9 +87,9 @@ public class VendingMachineController {
                     vendingMachineService.makePurchase(purchasedItem);
                     String changeOwed = vendingMachineService.calculateChange(userBalance, purchasedItem);
                     view.displayChange(changeOwed);
-                    this.userBalance.setBalance("0.00");
-                    hasErrors = false;
                 }
+                this.userBalance.setBalance("0.00");
+                hasErrors = false;
             } catch (InsufficientFundsException e) {
                 hasErrors = true;
                 view.displayErrorMessage(e.getMessage());
