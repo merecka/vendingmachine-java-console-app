@@ -3,6 +3,7 @@ package com.sg.vendingmachine.controller;
 import com.sg.vendingmachine.dao.VendingMachinePersistenceException;
 import com.sg.vendingmachine.dto.Item;
 import com.sg.vendingmachine.dto.UserBalance;
+import com.sg.vendingmachine.service.InsufficientFundsException;
 import com.sg.vendingmachine.service.VendingMachineServiceLayer;
 import com.sg.vendingmachine.ui.VendingMachineView;
 
@@ -22,7 +23,7 @@ public class VendingMachineController {
         this.userBalance = userBalance;
     }
 
-    public void run() throws VendingMachinePersistenceException {
+    public void run() throws VendingMachinePersistenceException, InsufficientFundsException {
         boolean keepGoing = true;
         int menuSelection;
 
@@ -62,7 +63,7 @@ public class VendingMachineController {
         vendingMachineService.insertFunds(newFundsString);
     }
 
-    private void makePurchase() throws VendingMachinePersistenceException {
+    private void makePurchase() throws VendingMachinePersistenceException, InsufficientFundsException {
         BigDecimal userBalance = this.userBalance.getBalance();
         if (userBalance.compareTo(new BigDecimal("0")) == 0) {
             view.displayNoFunds();

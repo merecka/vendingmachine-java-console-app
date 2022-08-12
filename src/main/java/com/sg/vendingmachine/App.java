@@ -4,6 +4,7 @@ import com.sg.vendingmachine.controller.VendingMachineController;
 import com.sg.vendingmachine.dao.*;
 import com.sg.vendingmachine.dto.Change;
 import com.sg.vendingmachine.dto.UserBalance;
+import com.sg.vendingmachine.service.InsufficientFundsException;
 import com.sg.vendingmachine.service.VendingMachineServiceLayer;
 import com.sg.vendingmachine.service.VendingMachineServiceLayerImpl;
 import com.sg.vendingmachine.ui.UserIO;
@@ -11,7 +12,7 @@ import com.sg.vendingmachine.ui.UserIOConsoleImpl;
 import com.sg.vendingmachine.ui.VendingMachineView;
 
 public class App {
-    public static void main(String[] args) throws VendingMachinePersistenceException {
+    public static void main(String[] args) throws VendingMachinePersistenceException, InsufficientFundsException {
         // Initiates a new UserBalance of $0
         UserBalance userBalance = new UserBalance();
         // Instantiate the UserIO implementation

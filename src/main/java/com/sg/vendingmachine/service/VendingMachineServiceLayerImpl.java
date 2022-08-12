@@ -50,9 +50,9 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     }
 
     @Override
-    public boolean makePurchase(Item item) throws VendingMachinePersistenceException {
+    public boolean makePurchase(Item item) throws VendingMachinePersistenceException, InsufficientFundsException {
         if (userBalance.getBalance().compareTo(item.getCost()) == -1) {  // evaluates if Item cost is more than current User balance
-            return false;
+            throw new InsufficientFundsException("NEW MSG:  Not enough funds to purchase item.  Please deposit more funds.");
         } else {
             itemsListAuditDao.writeAuditEntry("Item " + item.getItemId() + " " + item.getName() + " $" + item.getCost() + " purchased.");
             itemsDao.updateItemQuantity(item);
