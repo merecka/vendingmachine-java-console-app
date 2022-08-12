@@ -3,10 +3,12 @@ package com.sg.vendingmachine.controller;
 import com.sg.vendingmachine.dao.VendingMachinePersistenceException;
 import com.sg.vendingmachine.dto.Item;
 import com.sg.vendingmachine.dto.UserBalance;
+import com.sg.vendingmachine.service.InsufficientFundsException;
 import com.sg.vendingmachine.service.VendingMachineServiceLayer;
 import com.sg.vendingmachine.ui.VendingMachineView;
 
 import java.math.BigDecimal;
+import java.time.chrono.IsoChronology;
 import java.util.List;
 
 public class VendingMachineController {
@@ -46,6 +48,7 @@ public class VendingMachineController {
         }
         exitMessage();
     }
+
     private int getMenuSelection() throws VendingMachinePersistenceException {
         List<Item> itemList = vendingMachineService.getAllItems();
         BigDecimal userBalance = this.userBalance.getBalance();
@@ -68,19 +71,30 @@ public class VendingMachineController {
             view.displayNoFunds();
             return;
         }
-        List<Item> itemList = vendingMachineService.getAllItems();
-        int itemNumberChosen = view.displayItemList(itemList, userBalance) - 1;    // convert the menu number to the index number
-        Item purchasedItem = itemList.get(itemNumberChosen);
-        if (vendingMachineService.makePurchase(purchasedItem) == false) {  // not able to make purchase
-            String changeOwed = vendingMachineService.calculateChange(userBalance);
-            view.displayNotEnoughFunds();
-            view.displayChange(changeOwed);
-            this.userBalance.setBalance("0.00");
-        } else {  // able to make purchase
-            String changeOwed = vendingMachineService.calculateChange(userBalance, purchasedItem);
-            view.displayChange(changeOwed);
-            this.userBalance.setBalance("0.00");
-        }
+        boolean hasErrors = false;
+        do {
+            List<Item> itemList = vendingMachineService.getAllItems();
+            try {
+                int itemNumberChosen = view.displayItemList(itemList, userBalance);
+
+                if (itemNumberChosen == 0) {  // user wants to exit Item selection screen
+                    String changeOwed = vendingMachineService.calculateChange(userBalance);
+                    view.displayChange(changeOwed);
+                } else {
+                    // able to make purchase
+                    itemNumberChosen -= 1;   // convert the menu number to the index number
+                    Item purchasedItem = itemList.get(itemNumberChosen);
+                    vendingMachineService.makePurchase(purchasedItem);
+                    String changeOwed = vendingMachineService.calculateChange(userBalance, purchasedItem);
+                    view.displayChange(changeOwed);
+                }
+                this.userBalance.setBalance("0.00");
+                hasErrors = false;
+            } catch (InsufficientFundsException e) {
+                hasErrors = true;
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (hasErrors);
     }
 
     private void unknownCommand() {
