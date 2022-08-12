@@ -12,7 +12,7 @@ import com.sg.vendingmachine.ui.UserIOConsoleImpl;
 import com.sg.vendingmachine.ui.VendingMachineView;
 
 public class App {
-    public static void main(String[] args) throws VendingMachinePersistenceException, InsufficientFundsException {
+    public static void main(String[] args) throws VendingMachinePersistenceException {
         // Initiates a new UserBalance of $0
         UserBalance userBalance = new UserBalance();
         // Instantiate the UserIO implementation
