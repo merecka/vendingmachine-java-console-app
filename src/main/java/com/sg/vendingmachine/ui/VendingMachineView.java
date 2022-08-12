@@ -42,10 +42,10 @@ public class VendingMachineView {
 
     public void displayItemList(List<Item> itemList) {
         io.print("Items Available for Purchase");
-        int count = 1;
+        int count = 0;
         for (Item currentItem : itemList) {
             String itemInfo = String.format("%s. %s - $%s/ea - Quantity: %s",
-                    count++,
+                    ++count,
                     currentItem.getName(),
                     currentItem.getCost(),
                     currentItem.getQuantityOnHand());
@@ -64,8 +64,7 @@ public class VendingMachineView {
             io.print(itemInfo);
         }
         displayAvailableBalance(userBalance);
-        System.out.println("Count is " + count);
-        return io.readInt("Please choose one of the available items by its corresponding number.", 1, count);
+        return io.readInt("Please choose one of the available items by its corresponding number.", 0, count);
     }
 
     public double displayInsertFundsMenu() {
@@ -102,5 +101,11 @@ public class VendingMachineView {
 
     public void displayExitBanner() {
         io.print("Thanks for shopping!");
+    }
+
+    public void displayErrorMessage(String errorMsg) {
+        io.print("=== ERROR ===");
+        io.print(errorMsg);
+        io.print("");
     }
 }

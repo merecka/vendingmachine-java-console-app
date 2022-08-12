@@ -52,7 +52,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     @Override
     public boolean makePurchase(Item item) throws VendingMachinePersistenceException, InsufficientFundsException {
         if (userBalance.getBalance().compareTo(item.getCost()) == -1) {  // evaluates if Item cost is more than current User balance
-            throw new InsufficientFundsException("NEW MSG:  Not enough funds to purchase item.  Please deposit more funds.");
+            throw new InsufficientFundsException("Not enough funds to purchase item.  Please make another selection or type 0 to quit.");
         } else {
             itemsListAuditDao.writeAuditEntry("Item " + item.getItemId() + " " + item.getName() + " $" + item.getCost() + " purchased.");
             itemsDao.updateItemQuantity(item);
@@ -88,6 +88,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
                 userChange.getPenniesOwed() + " X Pennies";
 
         itemsListAuditDao.writeAuditEntry("$" +  userBalance + " change given.");
+        this.userBalance.setBalance("0.00");
         return changeOwedString;
     }
 
@@ -120,6 +121,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
                 userChange.getPenniesOwed() + " X Pennies";
 
         itemsListAuditDao.writeAuditEntry("$" +  originalOwed + " change given.");
+        this.userBalance.setBalance("0.00");
         return changeOwedString;
     }
 
