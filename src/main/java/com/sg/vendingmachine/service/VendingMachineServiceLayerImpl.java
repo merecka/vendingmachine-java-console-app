@@ -135,7 +135,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     }
 
     public void insertFunds(String newFunds) throws VendingMachinePersistenceException {
-        BigDecimal newFundsBD = new BigDecimal((newFunds)).setScale(2, RoundingMode.CEILING);
+        BigDecimal newFundsBD = new BigDecimal((newFunds)).setScale(2, RoundingMode.UNNECESSARY);
         itemsListAuditDao.writeAuditEntry("New funds in the amount of $" + newFundsBD + " inserted.");
     }
 }

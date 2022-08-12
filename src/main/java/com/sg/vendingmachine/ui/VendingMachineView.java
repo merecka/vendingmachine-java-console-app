@@ -37,7 +37,7 @@ public class VendingMachineView {
         io.print("2.  Make a purchase");
         io.print("3.  Exit");
 
-        return io.readInt("Please select from the above three Options (1-3).", 1, 5);
+        return io.readInt("Please select from the above three Options (1-3).", 1, 3);
     }
 
     public void displayItemList(List<Item> itemList) {
@@ -57,14 +57,25 @@ public class VendingMachineView {
         return io.readInt("Please choose one of the available items by its corresponding number.");
     }
 
-    public String displayInsertFundsMenu() {
-        String input = io.readString("How much would you like to deposit (ex: $2.50)?  $");
-        // TODO:  Need to verify user enters a valid formatted value (with a .) and a value greater than 0.
-        return input.trim();
+    public double displayInsertFundsMenu() {
+        double input;
+        boolean keepGoing = false;
+        do {
+            input = io.readDouble("How much would you like to deposit (ex: $2.50)?");
+            System.out.println("input is " + input);
+            if (input <= 0) {
+                io.print("Please deposit an amount greater than $0.");
+                keepGoing = true;
+            } else {
+                keepGoing = false;
+            }
+        } while (keepGoing);
+        return input;
     }
 
     public void displayChange(String changeOwed) {
-        io.readString("Your change is: " + changeOwed);
+        io.print("Your change is: " + changeOwed);
+        io.readString("Press enter to continue.");
     }
     public void displayUnknownCommandBanner() {
         io.print("Unknown Command.  Please try again.");

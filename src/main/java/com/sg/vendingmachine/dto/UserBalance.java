@@ -21,6 +21,11 @@ public class UserBalance {
 
     public void setBalance(String newAmount) {
         BigDecimal newAmountBD = new BigDecimal(newAmount);
-        this.currentBalance = newAmountBD.setScale(2, RoundingMode.CEILING);
+        this.currentBalance = newAmountBD.setScale(2, RoundingMode.UNNECESSARY);
+    }
+
+    public void addFunds(String newAmount) {
+        BigDecimal newAmountBD = new BigDecimal(newAmount).setScale(2, RoundingMode.UNNECESSARY);
+        this.currentBalance = currentBalance.add(newAmountBD);
     }
 }
