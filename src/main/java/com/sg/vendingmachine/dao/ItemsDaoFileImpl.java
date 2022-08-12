@@ -16,6 +16,11 @@ public class ItemsDaoFileImpl implements ItemsDao {
         this.ITEMS_FILE = "items.txt";
     }
 
+    public ItemsDaoFileImpl(String itemsTextFile) {
+        this.ITEMS_FILE = itemsTextFile;
+    }
+
+
     @Override
     public List<Item> getAllItems() throws VendingMachinePersistenceException {
         loadItems();
@@ -27,8 +32,7 @@ public class ItemsDaoFileImpl implements ItemsDao {
         return items.get(itemId);
     }
 
-    public void updateItemQuantity(Item item) throws VendingMachinePersistenceException {
-        Item itemToUpdate = getItem(item.getItemId());
+    public void updateItemQuantity(Item itemToUpdate) throws VendingMachinePersistenceException {
         itemToUpdate.setQuantityOnHand(itemToUpdate.getQuantityOnHand() - 1);
         writeItems();
     }
