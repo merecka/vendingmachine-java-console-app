@@ -30,7 +30,7 @@ public class VendingMachineView {
         }
     }
 
-    public int printMenuAndGetSelection(BigDecimal userBalance) {
+    public int printMenuAndGetSelection() {
         io.print("");
         io.print("Options:");
         io.print("1.  Insert funds");
@@ -52,17 +52,27 @@ public class VendingMachineView {
             io.print(itemInfo);
         }
     }
-
-    public int readUserPurchaseChoice() {
-        return io.readInt("Please choose one of the available items by its corresponding number.");
+    public int displayItemList(List<Item> itemList, BigDecimal userBalance) {
+        io.print("Items Available for Purchase");
+        int count = 0;
+        for (Item currentItem : itemList) {
+            String itemInfo = String.format("%s. %s - $%s/ea - Quantity: %s",
+                    ++count,
+                    currentItem.getName(),
+                    currentItem.getCost(),
+                    currentItem.getQuantityOnHand());
+            io.print(itemInfo);
+        }
+        displayAvailableBalance(userBalance);
+        System.out.println("Count is " + count);
+        return io.readInt("Please choose one of the available items by its corresponding number.", 1, count);
     }
 
     public double displayInsertFundsMenu() {
         double input;
-        boolean keepGoing = false;
+        boolean keepGoing;
         do {
             input = io.readDouble("How much would you like to deposit (ex: $2.50)?");
-            System.out.println("input is " + input);
             if (input <= 0) {
                 io.print("Please deposit an amount greater than $0.");
                 keepGoing = true;
@@ -82,11 +92,12 @@ public class VendingMachineView {
     }
 
     public void displayNotEnoughFunds() {
-        io.readString("Not enough funds available for this purchase.  Please deposit more funds.");
+        io.print("Not enough funds available for this purchase.  Please deposit more funds.");
     }
 
     public void displayNoFunds() {
-        io.readString("You must first deposit funds before making a purchase.");
+        io.print("You must first deposit funds before making a purchase.");
+        io.readString("Press enter to continue.");
     }
 
     public void displayExitBanner() {

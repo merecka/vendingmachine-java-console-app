@@ -24,7 +24,7 @@ public class VendingMachineController {
 
     public void run() throws VendingMachinePersistenceException {
         boolean keepGoing = true;
-        int menuSelection = 0;
+        int menuSelection;
 
         while (keepGoing) {
 
@@ -52,7 +52,7 @@ public class VendingMachineController {
         view.displayWelcomeBanner();
         view.displayItemList(itemList);
         view.displayAvailableBalance(userBalance);
-        return view.printMenuAndGetSelection(userBalance);
+        return view.printMenuAndGetSelection();
     }
 
     private void insertFunds() throws VendingMachinePersistenceException {
@@ -69,9 +69,7 @@ public class VendingMachineController {
             return;
         }
         List<Item> itemList = vendingMachineService.getAllItems();
-        view.displayItemList(itemList);
-        view.displayAvailableBalance(userBalance);
-        int itemNumberChosen = view.readUserPurchaseChoice() - 1;  // convert the menu number to the index number
+        int itemNumberChosen = view.displayItemList(itemList, userBalance) - 1;    // convert the menu number to the index number
         Item purchasedItem = itemList.get(itemNumberChosen);
         if (vendingMachineService.makePurchase(purchasedItem) == false) {  // not able to make purchase
             String changeOwed = vendingMachineService.calculateChange(userBalance);

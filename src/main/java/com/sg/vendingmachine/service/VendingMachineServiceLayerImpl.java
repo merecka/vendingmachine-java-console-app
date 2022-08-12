@@ -9,9 +9,7 @@ import com.sg.vendingmachine.dto.UserBalance;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class VendingMachineServiceLayerImpl implements VendingMachineServiceLayer {
@@ -56,7 +54,6 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
         if (userBalance.getBalance().compareTo(item.getCost()) == -1) {  // evaluates if Item cost is more than current User balance
             return false;
         } else {
-            String itemCost = "-" + item.getCost();
             itemsListAuditDao.writeAuditEntry("Item " + item.getItemId() + " " + item.getName() + " $" + item.getCost() + " purchased.");
             itemsDao.updateItemQuantity(item);
             return true;
@@ -70,24 +67,20 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
         Change userChange = new Change();
 
         //BigDecimal remainderOwedInPennies;
-        BigDecimal quartersOwed = changeOwedInPennies.divide(Coin.QUARTERS.value);
-        BigDecimal quartersRounded = quartersOwed.setScale(0, RoundingMode.DOWN);
-        userChange.setQuartersOwed(quartersRounded);
+        BigDecimal quartersOwed = changeOwedInPennies.divide(Coin.QUARTERS.value, RoundingMode.UNNECESSARY).setScale(0, RoundingMode.DOWN);
+        userChange.setQuartersOwed(quartersOwed);
         changeOwedInPennies = changeOwedInPennies.remainder(Coin.QUARTERS.value);
 
-        BigDecimal dimesOwed = changeOwedInPennies.divide(Coin.DIMES.value);
-        BigDecimal dimesRounded = dimesOwed.setScale(0, RoundingMode.DOWN);
-        userChange.setDimesOwed(dimesRounded);
+        BigDecimal dimesOwed = changeOwedInPennies.divide(Coin.DIMES.value, RoundingMode.UNNECESSARY).setScale(0, RoundingMode.DOWN);
+        userChange.setDimesOwed(dimesOwed);
         changeOwedInPennies = changeOwedInPennies.remainder(Coin.DIMES.value);
 
-        BigDecimal nickelsOwed = changeOwedInPennies.divide(Coin.NICKELS.value);
-        BigDecimal nickelsRounded = nickelsOwed.setScale(0, RoundingMode.DOWN);
-        userChange.setNicklesOwed(nickelsRounded);
+        BigDecimal nickelsOwed = changeOwedInPennies.divide(Coin.NICKELS.value, RoundingMode.UNNECESSARY).setScale(0, RoundingMode.DOWN);
+        userChange.setNicklesOwed(nickelsOwed);
         changeOwedInPennies = changeOwedInPennies.remainder(Coin.NICKELS.value);
 
-        BigDecimal penniesOwed = changeOwedInPennies.divide(Coin.PENNIES.value);
-        BigDecimal penniesRounded = penniesOwed.setScale(0, RoundingMode.DOWN);
-        userChange.setPenniesOwed(penniesRounded);
+        BigDecimal penniesOwed = changeOwedInPennies.divide(Coin.PENNIES.value, RoundingMode.UNNECESSARY).setScale(0, RoundingMode.DOWN);
+        userChange.setPenniesOwed(penniesOwed);
 
         String changeOwedString = "$" + userBalance + " which is made up of: " + userChange.getQuartersOwed() + " X Quarters, " +
                 userChange.getDimesOwed() + " X Dimes, " +
@@ -106,24 +99,20 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
         Change userChange = new Change();
 
         //BigDecimal remainderOwedInPennies;
-        BigDecimal quartersOwed = changeOwedInPennies.divide(Coin.QUARTERS.value);
-        BigDecimal quartersRounded = quartersOwed.setScale(0, RoundingMode.DOWN);
-        userChange.setQuartersOwed(quartersRounded);
+        BigDecimal quartersOwed = changeOwedInPennies.divide(Coin.QUARTERS.value, RoundingMode.UNNECESSARY).setScale(0, RoundingMode.DOWN);
+        userChange.setQuartersOwed(quartersOwed);
         changeOwedInPennies = changeOwedInPennies.remainder(Coin.QUARTERS.value);
 
-        BigDecimal dimesOwed = changeOwedInPennies.divide(Coin.DIMES.value);
-        BigDecimal dimesRounded = dimesOwed.setScale(0, RoundingMode.DOWN);
-        userChange.setDimesOwed(dimesRounded);
+        BigDecimal dimesOwed = changeOwedInPennies.divide(Coin.DIMES.value, RoundingMode.UNNECESSARY).setScale(0, RoundingMode.DOWN);
+        userChange.setDimesOwed(dimesOwed);
         changeOwedInPennies = changeOwedInPennies.remainder(Coin.DIMES.value);
 
-        BigDecimal nickelsOwed = changeOwedInPennies.divide(Coin.NICKELS.value);
-        BigDecimal nickelsRounded = nickelsOwed.setScale(0, RoundingMode.DOWN);
-        userChange.setNicklesOwed(nickelsRounded);
+        BigDecimal nickelsOwed = changeOwedInPennies.divide(Coin.NICKELS.value, RoundingMode.UNNECESSARY).setScale(0, RoundingMode.DOWN);
+        userChange.setNicklesOwed(nickelsOwed);
         changeOwedInPennies = changeOwedInPennies.remainder(Coin.NICKELS.value);
 
-        BigDecimal penniesOwed = changeOwedInPennies.divide(Coin.PENNIES.value);
-        BigDecimal penniesRounded = penniesOwed.setScale(0, RoundingMode.DOWN);
-        userChange.setPenniesOwed(penniesRounded);
+        BigDecimal penniesOwed = changeOwedInPennies.divide(Coin.PENNIES.value, RoundingMode.UNNECESSARY).setScale(0, RoundingMode.DOWN);
+        userChange.setPenniesOwed(penniesOwed);
 
         String changeOwedString = "$" + originalOwed + " which is made up of: " + userChange.getQuartersOwed() + " X Quarters, " +
                 userChange.getDimesOwed() + " X Dimes, " +
