@@ -24,7 +24,7 @@ public class VendingMachineController {
         this.userBalance = userBalance;
     }
 
-    public void run() throws VendingMachinePersistenceException, InsufficientFundsException {
+    public void run() throws VendingMachinePersistenceException {
         boolean keepGoing = true;
         int menuSelection;
 
@@ -65,7 +65,7 @@ public class VendingMachineController {
         vendingMachineService.insertFunds(newFundsString);
     }
 
-    private void makePurchase() throws VendingMachinePersistenceException, InsufficientFundsException {
+    private void makePurchase() throws VendingMachinePersistenceException {
         BigDecimal userBalance = this.userBalance.getBalance();
         if (userBalance.compareTo(new BigDecimal("0")) == 0) {
             view.displayNoFunds();

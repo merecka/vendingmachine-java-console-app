@@ -90,10 +90,6 @@ public class VendingMachineView {
         io.print("Unknown Command.  Please try again.");
     }
 
-    public void displayNotEnoughFunds() {
-        io.print("Not enough funds available for this purchase.  Please deposit more funds.");
-    }
-
     public void displayNoFunds() {
         io.print("You must first deposit funds before making a purchase.");
         io.readString("Press enter to continue.");
