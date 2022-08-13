@@ -8,8 +8,6 @@ import com.sg.vendingmachine.service.VendingMachineServiceLayer;
 import com.sg.vendingmachine.ui.VendingMachineView;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.chrono.IsoChronology;
 import java.util.List;
 
 public class VendingMachineController {
@@ -76,19 +74,14 @@ public class VendingMachineController {
             List<Item> itemList = vendingMachineService.getAllItems();
             try {
                 int itemNumberChosen = view.displayItemList(itemList, userBalance);
-
+                String changeOwed;
                 if (itemNumberChosen == 0) {  // user wants to exit Item selection screen
-                    String changeOwed = vendingMachineService.calculateChange(userBalance);
+                    changeOwed = vendingMachineService.calculateChange(userBalance);
                     view.displayChange(changeOwed);
                 } else {
-                    // able to make purchase
-                    itemNumberChosen -= 1;   // convert the menu number to the index number
-                    Item purchasedItem = itemList.get(itemNumberChosen);
-                    vendingMachineService.makePurchase(purchasedItem);
-                    String changeOwed = vendingMachineService.calculateChange(userBalance, purchasedItem);
-                    view.displayChange(changeOwed);
+                    changeOwed = vendingMachineService.makePurchase(itemNumberChosen);
                 }
-                this.userBalance.setBalance(new BigDecimal("0.00").setScale(2, RoundingMode.UNNECESSARY));
+                view.displayChange(changeOwed);
                 hasErrors = false;
             } catch (InsufficientFundsException e) {
                 hasErrors = true;
