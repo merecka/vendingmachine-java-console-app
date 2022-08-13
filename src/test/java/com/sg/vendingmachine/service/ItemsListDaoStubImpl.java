@@ -26,7 +26,6 @@ public class ItemsListDaoStubImpl implements ItemsDao{
         itemList.add(testItemWithQty1);
         itemList.add(testItemNoQty);
         itemList.add(testItemWithQty2);
-        System.out.println("itemList.size() is " + itemList.size());
         return itemList;
     }
 

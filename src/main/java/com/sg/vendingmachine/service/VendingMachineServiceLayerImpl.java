@@ -47,7 +47,6 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     public List<Item> getAllItems() throws VendingMachinePersistenceException {
         List<Item> allItems = itemsDao.getAllItems();
         List<Item> allItemsFiltered = allItems.stream().filter((item) -> item.getQuantityOnHand() > 0).collect(Collectors.toList());
-        System.out.println("allItemsFiltered.size() inside VendingService is " + allItemsFiltered.size());
         return allItemsFiltered;
     }
 
