@@ -53,7 +53,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
 
     @Override
     public String makePurchase(int itemNumberChosen) throws VendingMachinePersistenceException, InsufficientFundsException {
-        List<Item> itemList = getAllItems();
+        List<Item> itemList = getAllItems();  // returns a List of Items that have an onHandQuantity > 0
         Item purchasedItem = itemList.get(--itemNumberChosen);  // convert the menu number to the itemList index number
         if (userBalance.getBalance().compareTo(purchasedItem.getCost()) == -1) {  // evaluates if Item cost is more than current User balance
             throw new InsufficientFundsException("Not enough funds to purchase item.  Please make another selection or type 0 to quit.");
