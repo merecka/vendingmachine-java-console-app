@@ -71,7 +71,7 @@ public class VendingMachineView {
         double input;
         boolean keepGoing;
         do {
-            input = io.readDouble("How much would you like to deposit (ex: $2.50)?");
+            input = io.readDouble("How much would you like to deposit (ex: $2.50 = 2.50)?");
             if (input <= 0) {
                 io.print("Please deposit an amount greater than $0.");
                 keepGoing = true;

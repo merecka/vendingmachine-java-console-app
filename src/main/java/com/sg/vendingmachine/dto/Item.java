@@ -2,6 +2,7 @@ package com.sg.vendingmachine.dto;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Objects;
 
 public class Item {
 
@@ -15,6 +16,12 @@ public class Item {
 
     public Item(String id) {
         this.id = id;
+    }
+    public Item(String id, String name, int quantityOnHand, BigDecimal cost) {
+        this.id = id;
+        this.name = name;
+        this.quantityOnHand = quantityOnHand;
+        this.cost = cost;
     }
 
     public String getItemId() {
@@ -44,5 +51,28 @@ public class Item {
 
     public void setQuantityOnHand(int quantityOnHand) {
         this.quantityOnHand = quantityOnHand;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return quantityOnHand == item.quantityOnHand && id.equals(item.id) && name.equals(item.name) && cost.equals(item.cost);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, cost, quantityOnHand);
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", cost=" + cost +
+                ", quantityOnHand=" + quantityOnHand +
+                '}';
     }
 }

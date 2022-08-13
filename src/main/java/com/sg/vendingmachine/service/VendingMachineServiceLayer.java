@@ -10,7 +10,7 @@ public interface VendingMachineServiceLayer {
 
     List<Item> getAllItems() throws VendingMachinePersistenceException;
 
-    boolean makePurchase(Item item) throws VendingMachinePersistenceException, InsufficientFundsException;
+    String makePurchase(int itemNumber) throws VendingMachinePersistenceException, InsufficientFundsException;
 
     String calculateChange(BigDecimal userBalance) throws VendingMachinePersistenceException;
     String calculateChange(BigDecimal userBalance, Item purchasedItem) throws VendingMachinePersistenceException;
