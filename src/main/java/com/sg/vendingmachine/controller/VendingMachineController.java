@@ -8,6 +8,7 @@ import com.sg.vendingmachine.service.VendingMachineServiceLayer;
 import com.sg.vendingmachine.ui.VendingMachineView;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.chrono.IsoChronology;
 import java.util.List;
 
@@ -61,7 +62,6 @@ public class VendingMachineController {
     private void insertFunds() throws VendingMachinePersistenceException {
         double newFunds = view.displayInsertFundsMenu();
         String newFundsString = String.valueOf(newFunds);
-        this.userBalance.addFunds(newFundsString);
         vendingMachineService.insertFunds(newFundsString);
     }
 
@@ -88,7 +88,7 @@ public class VendingMachineController {
                     String changeOwed = vendingMachineService.calculateChange(userBalance, purchasedItem);
                     view.displayChange(changeOwed);
                 }
-                this.userBalance.setBalance("0.00");
+                this.userBalance.setBalance(new BigDecimal("0.00").setScale(2, RoundingMode.UNNECESSARY));
                 hasErrors = false;
             } catch (InsufficientFundsException e) {
                 hasErrors = true;

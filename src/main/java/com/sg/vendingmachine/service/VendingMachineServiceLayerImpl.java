@@ -46,7 +46,9 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     @Override
     public List<Item> getAllItems() throws VendingMachinePersistenceException {
         List<Item> allItems = itemsDao.getAllItems();
-        return allItems.stream().filter((item) -> item.getQuantityOnHand() > 0).collect(Collectors.toList());
+        List<Item> allItemsFiltered = allItems.stream().filter((item) -> item.getQuantityOnHand() > 0).collect(Collectors.toList());
+        System.out.println("allItemsFiltered.size() inside VendingService is " + allItemsFiltered.size());
+        return allItemsFiltered;
     }
 
     @Override
@@ -88,7 +90,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
                 userChange.getPenniesOwed() + " X Pennies";
 
         itemsListAuditDao.writeAuditEntry("$" +  userBalance + " change given.");
-        this.userBalance.setBalance("0.00");
+        this.userBalance.setBalance(new BigDecimal("0.00").setScale(2, RoundingMode.UNNECESSARY));
         return changeOwedString;
     }
 
@@ -121,12 +123,13 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
                 userChange.getPenniesOwed() + " X Pennies";
 
         itemsListAuditDao.writeAuditEntry("$" +  originalOwed + " change given.");
-        this.userBalance.setBalance("0.00");
+        this.userBalance.setBalance(new BigDecimal("0.00").setScale(2, RoundingMode.UNNECESSARY));
         return changeOwedString;
     }
 
     public void insertFunds(String newFunds) throws VendingMachinePersistenceException {
         BigDecimal newFundsBD = new BigDecimal((newFunds)).setScale(2, RoundingMode.UNNECESSARY);
+        userBalance.setBalance(userBalance.getBalance().add(newFundsBD).setScale(2, RoundingMode.HALF_UP));
         itemsListAuditDao.writeAuditEntry("New funds in the amount of $" + newFundsBD + " inserted.");
     }
 }

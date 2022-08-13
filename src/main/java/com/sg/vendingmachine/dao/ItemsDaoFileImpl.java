@@ -33,7 +33,9 @@ public class ItemsDaoFileImpl implements ItemsDao {
     }
 
     public void updateItemQuantity(Item itemToUpdate) throws VendingMachinePersistenceException {
-        itemToUpdate.setQuantityOnHand(itemToUpdate.getQuantityOnHand() - 1);
+        if (itemToUpdate.getQuantityOnHand() > 0) {
+            itemToUpdate.setQuantityOnHand(itemToUpdate.getQuantityOnHand() - 1);
+        }
         writeItems();
     }
 
