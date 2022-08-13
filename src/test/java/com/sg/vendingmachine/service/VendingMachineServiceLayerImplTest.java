@@ -17,11 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class VendingMachineServiceLayerImplTest {
 
     private VendingMachineServiceLayer service;
+    private UserBalance userBalance;
 
     public VendingMachineServiceLayerImplTest() {
         ItemsDao itemsDao = new ItemsListDaoStubImpl();
         ItemsListAuditDao itemsAuditDao = new ItemsListAuditDaoStubImpl();
-        UserBalance userBalance = new UserBalance();
+        userBalance = new UserBalance();
 
         service = new VendingMachineServiceLayerImpl(itemsDao, userBalance, itemsAuditDao) {
         };
@@ -50,6 +51,9 @@ class VendingMachineServiceLayerImplTest {
     }
 
     @Test
-    void insertFunds() {
-    }
+    void insertFunds() throws VendingMachinePersistenceException {
+        String newFunds = "1.50";
+        service.insertFunds(newFunds);
+        assertEquals(new BigDecimal("1.50"), this.userBalance.getBalance());
+   }
 }
